@@ -1,6 +1,5 @@
 package com.springboot.blog.payload;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

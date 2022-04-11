@@ -28,6 +28,26 @@ public class PostServiceImpl implements PostService {
         List<Post> posts = repo.findAll();
         return posts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
     }
+    
+    @Override
+	public PostDto getPostById(long id) {
+		return mapToDTO(repo.findById(id).get());
+	}
+    
+    @Override
+	public PostDto updatePostyId(long id, PostDto postDto) {
+		Post post = repo.findById(id).get();
+		post.setTitle(postDto.getTitle());
+		post.setDescription(postDto.getDescription());
+		post.setContent(postDto.getContent());
+		PostDto updatedPost = mapToDTO(repo.save(post));
+		return updatedPost;
+	}
+
+	@Override
+	public void deletePostById(long id) {
+		repo.deleteById(id);
+	}
 
     private Post mapToEntity(PostDto postDto) {
         Post post = new Post();
