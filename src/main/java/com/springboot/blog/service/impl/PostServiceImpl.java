@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,8 +30,10 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostPage getAllPosts(int pageNo, int pageSize) {
-		Pageable pageable = PageRequest.of(pageNo, pageSize);
+	public PostPage getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
+		Direction dir = sortDir.equalsIgnoreCase(Direction.DESC.toString()) ? Direction.DESC : Direction.ASC;
+		
+		Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(dir, sortBy));
 		Page<Post> page = repo.findAll(pageable);
 
 		PostPage postPage = new PostPage();

@@ -6,7 +6,7 @@ import com.springboot.blog.payload.PostPage;
 public interface PostService {
     PostDto savePost(PostDto post);
     
-    PostPage getAllPosts(int pageNo, int pageSize);
+    PostPage getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir);
     
     PostDto getPostById(long id);
     

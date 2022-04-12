@@ -26,8 +26,10 @@ public class PostController {
 	@GetMapping
 	public PostPage getAllPosts(
 			@RequestParam(required = false, defaultValue = Constants.DEFAULT_PAGE_NO) int pageNo,
-			@RequestParam(required = false, defaultValue = Constants.DEFAULT_PAGE_SIZE) int pageSize) {
-		return service.getAllPosts(pageNo, pageSize);
+			@RequestParam(required = false, defaultValue = Constants.DEFAULT_PAGE_SIZE) int pageSize,
+			@RequestParam(required = false, defaultValue = Constants.DEFAULT_SORT_BY) String sortBy,
+			@RequestParam(required = false, defaultValue = Constants.DEFAULT_SORT_DIR) String sortDir) {
+		return service.getAllPosts(pageNo, pageSize, sortBy, sortDir);
 	}
 
 	@GetMapping(path = "/{id}")
