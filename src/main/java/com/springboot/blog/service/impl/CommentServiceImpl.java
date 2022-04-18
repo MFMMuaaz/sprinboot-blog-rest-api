@@ -3,8 +3,7 @@ package com.springboot.blog.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
-import org.springframework.http.HttpStatus;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.springboot.blog.exception.BlogAppException;
@@ -20,28 +19,20 @@ import com.springboot.blog.service.CommentService;
 public class CommentServiceImpl implements CommentService {
 	private PostRepository postRepo;
 	private CommentRepository commentRepo;
+	private ModelMapper mapper;
 
-	public CommentServiceImpl(PostRepository postRepo, CommentRepository commentRepo) {
+	public CommentServiceImpl(PostRepository postRepo, CommentRepository commentRepo, ModelMapper mapper) {
 		this.postRepo = postRepo;
 		this.commentRepo = commentRepo;
+		this.mapper = mapper;
 	}
 
 	private Comment mapToEntity(CommentDto commentDto) {
-		Comment comment = new Comment();
-		comment.setId(commentDto.getId());
-		comment.setName(commentDto.getName());
-		comment.setEmail(commentDto.getEmail());
-		comment.setBody(commentDto.getBody());
-		return comment;
+		return mapper.map(commentDto, Comment.class);
 	}
 
 	private CommentDto mapToDTO(Comment comment) {
-		CommentDto commentDto = new CommentDto();
-		commentDto.setId(comment.getId());
-		commentDto.setName(comment.getName());
-		commentDto.setEmail(comment.getEmail());
-		commentDto.setBody(comment.getBody());
-		return commentDto;
+		return mapper.map(comment, CommentDto.class);
 	}
 	
 	@Override

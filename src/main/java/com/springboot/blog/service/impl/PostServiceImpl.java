@@ -6,6 +6,7 @@ import com.springboot.blog.payload.PostPage;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.PostService;
 import org.springframework.stereotype.Service;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +19,11 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
 	private PostRepository repo;
+	private ModelMapper mapper;
 
-	public PostServiceImpl(PostRepository repo) {
+	public PostServiceImpl(PostRepository repo, ModelMapper mapper) {
 		this.repo = repo;
+		this.mapper = mapper;
 	}
 
 	public PostDto savePost(PostDto postDto) {
@@ -68,21 +71,11 @@ public class PostServiceImpl implements PostService {
 	}
 
 	private Post mapToEntity(PostDto postDto) {
-		Post post = new Post();
-		post.setId(postDto.getId());
-		post.setTitle(postDto.getTitle());
-		post.setDescription(postDto.getDescription());
-		post.setContent(postDto.getContent());
-		return post;
+		return mapper.map(postDto, Post.class);
 	}
 
 	private PostDto mapToDTO(Post post) {
-		PostDto postDto = new PostDto();
-		postDto.setId(post.getId());
-		postDto.setTitle(post.getTitle());
-		postDto.setDescription(post.getDescription());
-		postDto.setContent(post.getContent());
-		return postDto;
+		return mapper.map(post, PostDto.class);
 	}
 
 }
