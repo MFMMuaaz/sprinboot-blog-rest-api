@@ -7,7 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.springboot.blog.exception.BlogAppException;
-import com.springboot.blog.exception.ResourceNotFountException;
+import com.springboot.blog.exception.ResourceNotFoundException;
 import com.springboot.blog.model.Comment;
 import com.springboot.blog.model.Post;
 import com.springboot.blog.payload.CommentDto;
@@ -39,7 +39,7 @@ public class CommentServiceImpl implements CommentService {
 	public CommentDto createComment(long postId, CommentDto commentDto) {
 		Comment comment = mapToEntity(commentDto);
 		Post post = postRepo.findById(postId)
-				.orElseThrow(() -> new ResourceNotFountException("Post", "id", postId));
+				.orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
 		comment.setPost(post);
 		Comment createdComment = commentRepo.save(comment);
 		return mapToDTO(createdComment);
@@ -54,9 +54,9 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public CommentDto getCommentById(long postId, long commentId) {
 		Post post = postRepo.findById(postId)
-				.orElseThrow(() -> new ResourceNotFountException("Post", "id", postId));
+				.orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
 		Comment comment = commentRepo.findById(commentId)
-				.orElseThrow(() -> new ResourceNotFountException("Comment", "id", commentId));
+				.orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
 		if (!comment.getPost().getId().equals(post.getId())) {
 			throw new BlogAppException(400, "The ids are mismatching. Please verify and try again!");
 		}
@@ -66,7 +66,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public CommentDto updateCommentById(long postId, long commentId, CommentDto commentDto) {
 		Post post = postRepo.findById(postId)
-				.orElseThrow(() -> new ResourceNotFountException("Post", "id", postId));
+				.orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
 		Comment comment = commentRepo.findById(commentId).get();
 		if (!comment.getPost().getId().equals(post.getId())) {
 			throw new BlogAppException(400, "The ids are mismatching. Please verify and try again!");
@@ -81,9 +81,9 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void deleteCommentById(long postId, long commentId) {
 		Post post = postRepo.findById(postId)
-				.orElseThrow(() -> new ResourceNotFountException("Post", "id", postId));
+				.orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
 		Comment comment = commentRepo.findById(commentId)
-				.orElseThrow(() -> new ResourceNotFountException("Comment", "id", commentId));
+				.orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
 		if (!comment.getPost().getId().equals(post.getId())) {
 			throw new BlogAppException(400, "The ids are mismatching. Please verify and try again!");
 		}
